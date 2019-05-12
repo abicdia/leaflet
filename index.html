@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Display a map</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
+
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+
+var mymap = L.map('map').setView([31.505, 121], 5.5);
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: '...',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiMjM3NDA2OTg0IiwiYSI6ImNqdmt2d214eTB2dDQ0NHFycW5razN2ZnEifQ.d2mdVntcWxItWF2tKKNxVA'
+}).addTo(mymap);
+
+var circle = L.circle([31.505, 121], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 500
+}).addTo(mymap);
+
+
+
+circle.bindPopup("I am a circle.");
+
+
+
+var popup = L.popup()
+    .setLatLng([31.505, 121])
+    .setContent("I am a standalone popup.")
+    .openOn(mymap);
+</script>
+<!-- <script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiMjM3NDA2OTg0IiwiYSI6ImNqdmt2d214eTB2dDQ0NHFycW5razN2ZnEifQ.d2mdVntcWxItWF2tKKNxVA';
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/237406984/cjvkyk4w910he1cmlxgztn87o',
+  center: [121.329775, 28.147767],
+  zoom: 4.5
+});
+
+var mymap = L.map('map').setView([121.329775, 28.147767], 13);
+var circle = L.circle([121.329775, 28.147767], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 10000
+}).addTo(mymap);
+
+
+circle.bindPopup("I am a circle.").openPopup();
+var popup = L.popup()
+    .setLatLng([121.329775, 28.147767])
+    .setContent("I am a standalone popup.")
+    .openOn(mymap);
+
+</script> -->
+
+</body>
+</html>
