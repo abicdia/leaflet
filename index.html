@@ -91,9 +91,9 @@ function getColor(d) {
                       '#FFEDA0';
 }
 
-function geojsonMarkerOptions(feature){
+function style(feature){
     return{
-    radius: 7,
+    radius: 8,
     fillColor: getColor(feature.properties.t),
     color: "#000",
     weight: 1,
@@ -121,14 +121,69 @@ legend.onAdd = function (map) {
     return div;
 };
 
+
+function highlightFeature(e) {
+		var layer = e.target;
+		info.update(layer.feature.properties);
+	}
+
+	function resetHighlight(e) {
+
+		info.update();
+	}
+
+	function zoomToFeature(e) {
+	
+	}
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+	}
+
+
+
+
+
      legend.addTo(mymap);
-    L.geoJSON(statesData, {
+
+var city= L.geoJSON(statesData, {
+		onEachFeature: onEachFeature,
     pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions(feature));
-    }
-}).addTo(mymap).addTo(cities);
+        return L.circleMarker(latlng, style(feature));
+	}}).addTo(mymap)
+
 
 L.control.layers(baseMaps, overlayMaps).addTo(mymap);
+
+
+
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    // this._div.innerHTML = '<h4>气温</h4>' +  (props ?
+    //     '<b>' + props.name + '  '  + props.t + '℃'
+    //     : '');
+    this._div.innerHTML = '<h4>全国各地气温数据</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />'  + props.t + '℃'
+        : '当前未选中城市');
+};
+
+info.addTo(mymap);
+
+
+
 
 </script>
 </body>
